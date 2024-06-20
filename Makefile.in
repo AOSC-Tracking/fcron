@@ -144,7 +144,7 @@ test: fcron
 	$(MAKE) -C test tests
 
 
-install: install-staged strip perms
+install: install-staged perms
 ifeq ($(BOOTINSTALL), 1)
 	$(SRCDIR)/script/boot-install "$(INSTALL) -o $(ROOTNAME)" $(DESTSBIN) $(DEBUG) $(FCRONTABS) $(ANSWERALL) $(SRCDIR)
 endif
@@ -183,7 +183,7 @@ endif
 	$(MAKE) -C doc install-staged
 
 
-perms: install-staged strip
+perms: install-staged
 # Note : we don't use "chown user:group file" because some systems use ":"
 #        and others "." as separator.
 	chown $(ROOTNAME) $(DESTDIR)$(DESTSBIN)
