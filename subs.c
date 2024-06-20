@@ -109,8 +109,8 @@ open_as_user(const char *pathname, uid_t openuid, gid_t opengid, int flags, ...)
         va_end(ap);
     }
 
-    seteuid_safe(openuid);
     setegid_safe(opengid);
+    seteuid_safe(openuid);
 
     if (flags & O_CREAT) {
         fd = open(pathname, flags, mode);
@@ -121,8 +121,8 @@ open_as_user(const char *pathname, uid_t openuid, gid_t opengid, int flags, ...)
     saved_errno = errno;
 
     /* change the effective uid/gid back to original values */
-    seteuid_safe(orig_euid);
     setegid_safe(orig_egid);
+    seteuid_safe(orig_euid);
 
     /* if open() didn't fail make sure we opened a 'normal' file */
     if (fd >= 0) {
@@ -271,15 +271,15 @@ remove_as_user(const char *pathname, uid_t removeuid, gid_t removegid)
     uid_t orig_euid = geteuid();
     gid_t orig_egid = getegid();
 
-    seteuid_safe(removeuid);
     setegid_safe(removegid);
+    seteuid_safe(removeuid);
 #endif                          /* def USE_SETE_ID */
 
     rval = remove(pathname);
 
 #ifdef USE_SETE_ID
-    seteuid_safe(orig_euid);
     setegid_safe(orig_egid);
+    seteuid_safe(orig_euid);
 #endif                          /* def USE_SETE_ID */
 
     return rval;
@@ -295,15 +295,15 @@ rename_as_user(const char *oldpath, const char *newpath, uid_t renameuid,
     uid_t orig_euid = geteuid();
     gid_t orig_egid = getegid();
 
-    seteuid_safe(renameuid);
     setegid_safe(renamegid);
+    seteuid_safe(renameuid);
 #endif                          /* def USE_SETE_ID */
 
     rval = rename(oldpath, newpath);
 
 #ifdef USE_SETE_ID
-    seteuid_safe(orig_euid);
     setegid_safe(orig_egid);
+    seteuid_safe(orig_euid);
 #endif                          /* def USE_SETE_ID */
 
     return rval;
